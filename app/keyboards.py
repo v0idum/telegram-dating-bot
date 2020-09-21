@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from app.database import db
-from app.strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL
-from app.states import EditProfile
+from database import db
+from strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL
+from states import EditProfile
 
 
 def gender_keyboard(male: str, female: str):
@@ -63,14 +63,14 @@ def like_and_more_kb(like: str, more: str, free_profile=False):
 def chat_and_more_kb(chat: str, more: str, free_profile=False):
     kb = InlineKeyboardMarkup()
     profile_text = '✅Профиль' if free_profile else f'👁Профиль 5{SYMBOL}'
-    chat_text = '✉' if free_profile else f'✉ 10{SYMBOL}'
+    chat_text = '✉Написать' if free_profile else f'✉ 10{SYMBOL}'
     kb.add(InlineKeyboardButton(chat_text, callback_data=chat), InlineKeyboardButton(profile_text, callback_data=more))
     return kb
 
 
 def chat_kb(chat: str):
     kb = InlineKeyboardMarkup()
-    kb.add(InlineKeyboardButton('✉️', callback_data=chat))
+    kb.add(InlineKeyboardButton('✉️Написать', callback_data=chat))
     return kb
 
 

@@ -1,9 +1,9 @@
 from aiogram import Bot, types
 from aiogram.types import ParseMode
 
-from app import strings
-from app.database import db
-from app.keyboards import like_and_chat_kb
+import strings
+from database import db
+from keyboards import like_and_chat_kb
 
 import re
 
@@ -11,7 +11,7 @@ import re
 async def display_user(to_user, user, swipe=False, markup=None):
     keyboard = markup if markup is not None else like_and_chat_kb(parse_like(user[0]), parse_chat(user[0]), swipe=swipe)
     await Bot.get_current().send_photo(to_user, photo=user[6], caption=strings.user_info(user),
-                                       reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN_V2)
+                                       reply_markup=keyboard, parse_mode=ParseMode.HTML)
 
 
 def has_premium_or_hearts(user_id, number: int):
@@ -31,12 +31,12 @@ async def subtract_hearts(callback, user_id, query, hearts, *args):
         await show_subtract_answer(query, ok, hearts)
         await callback(query, *args)
     else:
-        await query.answer('У вас недостаточно 💘')
+        await query.answer(f'У вас недостаточно {strings.SYMBOL}')
 
 
 async def show_subtract_answer(query: types.CallbackQuery, res, arg):
     if not isinstance(res, bool):
-        await query.answer(f'-️{arg}💘 Осталось {res[0]}💘')
+        await query.answer(f'-️{arg}{strings.SYMBOL} Осталось {res[0]}{strings.SYMBOL}')
 
 
 def parse_gender(gender: str):

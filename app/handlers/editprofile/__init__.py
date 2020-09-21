@@ -2,9 +2,9 @@ from aiogram import Dispatcher
 from .edition import *
 from aiogram.types.message import ContentType
 
-from app.states import EditProfile
-from ..registration import process_invalid_name, process_age_invalid, process_invalid_photo, process_city_invalid
-from ...utils import is_cyrillic
+from states import EditProfile
+from handlers.registration.registration import process_invalid_name, process_age_invalid, process_invalid_photo, process_city_invalid
+from utils import is_cyrillic
 
 
 def setup(dp: Dispatcher):

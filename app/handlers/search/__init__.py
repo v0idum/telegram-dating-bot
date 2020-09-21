@@ -2,9 +2,9 @@ from aiogram import Dispatcher
 from aiogram.types import ContentType
 
 from .search import *
-from app.strings import MALE_SEARCH, FEMALE_SEARCH, NEXT
-from app.states import Search
-from app.utils import is_like, is_chat, is_profile
+from strings import NEXT
+from states import Search
+from utils import is_like, is_profile
 
 
 def setup(dp: Dispatcher):

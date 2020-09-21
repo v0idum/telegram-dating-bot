@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 
 from .home import *
-from app.strings import SEARCH, CONVERSE, PROFILE, BALANCE
+from strings import SEARCH, CONVERSE, PROFILE, BALANCE
 
 
 def setup(dp: Dispatcher):

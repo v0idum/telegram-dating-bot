@@ -1,6 +1,6 @@
 from .conversation import *
-from ...states import Conversation
-from ...utils import is_chat
+from states import Conversation
+from utils import is_chat
 
 
 def setup(dp: Dispatcher):
