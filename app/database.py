@@ -129,13 +129,13 @@ class DBConnector:
         return self.cursor.fetchone()[0]
 
     def add_city(self, name):
-        self.cursor.execute("INSERT INTO cities (name) VALUES (%s)", (name,))
+        self.cursor.execute("INSERT INTO cities (name) VALUES (%s)", (name.capitalize(),))
         self.connection.commit()
         log.info(f'City {name} added')
         return self.cursor.lastrowid
 
     def city_exists(self, name):
-        self.cursor.execute("SELECT * FROM cities WHERE name = %s", (name,))
+        self.cursor.execute("SELECT * FROM cities WHERE name = %s", (name.capitalize(),))
         return bool(len(self.cursor.fetchall()))
 
     def get_city_id(self, name):
@@ -151,8 +151,15 @@ class DBConnector:
 
     def remove_city(self, name):
         sql = "DELETE FROM cities WHERE name = %s"
-        self.cursor.execute(sql, (name,))
+        self.cursor.execute(sql, (name.capitalize(),))
         self.connection.commit()
+
+    def edit_users_city_name(self, city_id, new_name, old_name):
+        new_city_id = self.get_city_id(new_name)
+        sql = "UPDATE users SET city = %s WHERE city = %s"
+        self.cursor.execute(sql, (new_city_id, city_id))
+        self.connection.commit()
+        self.remove_city(old_name)
 
     def create_chat(self, first_user, second_user):
         sql = "INSERT INTO chats (first_user, second_user) VALUES (%s, %s)"
