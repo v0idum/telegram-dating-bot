@@ -3,8 +3,8 @@ from aiogram.dispatcher.filters import CommandStart
 from aiogram.types.message import ContentType
 
 from .registration import *
-from app.states import Profile
-from ...utils import is_cyrillic
+from states import Profile
+from utils import is_cyrillic
 
 
 def setup(dp: Dispatcher):
