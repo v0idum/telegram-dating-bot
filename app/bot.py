@@ -49,6 +49,15 @@ async def remove_city(message: types.Message):
         await message.answer(f'City {name} does not exist')
 
 
+@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='editcity', state='*')
+async def edit_users_city(message: types.Message):
+    cmd = message.get_args()
+    if cmd:
+        args = cmd.split(' ')
+        db.edit_users_city_name(*args)
+        await message.answer('Done')
+
+
 @dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='cities', state='*')
 async def get_users(message: types.Message):
     cities = db.get_cities()
