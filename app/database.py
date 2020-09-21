@@ -44,7 +44,7 @@ class DBConnector:
         log.info(f'{name} joined')
 
     def get_users(self):
-        self.cursor.execute("SELECT name, age, gender, about FROM users")
+        self.cursor.execute("SELECT user_id, name, age, gender, about FROM users")
         return self.cursor.fetchall()
 
     def next_user_by_city(self, city_id, gender, exclude, offset):
@@ -96,6 +96,11 @@ class DBConnector:
     def user_exists(self, user_id):
         self.cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         return bool(len(self.cursor.fetchall()))
+
+    def remove_user(self, user_id):
+        sql = "DELETE FROM users WHERE user_id = %s"
+        self.cursor.execute(sql, (user_id,))
+        self.connection.commit()
 
     def update_user(self, user_id, field_to_update, new_value):
         sql = "UPDATE users SET {} = %s WHERE user_id = %s".format(field_to_update)

@@ -21,6 +21,17 @@ async def shutdown_storage(dispatcher: Dispatcher):
     await dispatcher.storage.wait_closed()
 
 
+@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='rmuser', state='*')
+async def remove_user(message: types.Message):
+    user_id = message.get_args()
+    if user_id and db.user_exists(user_id):
+        db.remove_user(user_id)
+        await message.answer(f'User {user_id} has been removed..')
+        logging.info(f'User {user_id} has been removed..')
+    else:
+        await message.answer(f'User {user_id} does not exist')
+
+
 @dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='all', state='*')
 async def get_users(message: types.Message):
     await message.answer(db.get_users())
