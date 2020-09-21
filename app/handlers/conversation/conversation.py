@@ -29,7 +29,7 @@ async def process_chat_login(query: types.CallbackQuery, state: FSMContext):
     await query.answer('Вход в чат')
     await query.message.delete()
     await query.message.answer(
-        hbold(f'🗣️Вы перешли в чат с пользователем {name}. Он(а) получит все ваши сообщения✈️.'),
+        hbold(f'🗣️Вы перешли в чат с пользователем {name}. Он(а) получит все Ваши сообщения✈️.'),
         reply_markup=markup, parse_mode=ParseMode.HTML)
 
 

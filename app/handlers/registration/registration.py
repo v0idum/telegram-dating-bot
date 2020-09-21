@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 async def cmd_start(message: types.Message, state: FSMContext):
     user_exists = db.user_exists(message.from_user.id)
     if user_exists and db.is_user_active(message.from_user.id):
-        await message.answer(hbold('Приветствую❗Рад, что вы вернулись!🤗'),
+        await message.answer(hbold('Приветствую❗Рад, что Вы вернулись!🤗'),
                              parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
         return
 
@@ -29,7 +29,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
     # Set state
     await Profile.name.set()
     await message.answer(strings.welcome_msg(), parse_mode=ParseMode.HTML)
-    await message.answer(hitalic("Представьтесь, как вас зовут?"), parse_mode=ParseMode.HTML)
+    await message.answer(hitalic("Представьтесь, как Вас зовут?"), parse_mode=ParseMode.HTML)
 
 
 async def process_invalid_name(message: types.Message):
@@ -42,7 +42,7 @@ async def process_name(message: types.Message, state: FSMContext):
         data['name'] = message.text
 
     await Profile.next()
-    await message.answer(hitalic("Сколько вам лет?"), parse_mode=ParseMode.HTML)
+    await message.answer(hitalic("Сколько Вам лет?"), parse_mode=ParseMode.HTML)
 
 
 async def process_age_invalid(message: types.Message):
@@ -54,7 +54,7 @@ async def process_age(message: types.Message, state: FSMContext):
     await Profile.next()
     await state.update_data(age=int(message.text))
 
-    await message.answer(hitalic("Кто вы?"), reply_markup=gender_keyboard(strings.MALE, strings.FEMALE),
+    await message.answer(hitalic("Кто Вы?"), reply_markup=gender_keyboard(strings.MALE, strings.FEMALE),
                          parse_mode=ParseMode.HTML)
 
 
@@ -93,7 +93,7 @@ async def process_about(message: types.Message, state: FSMContext):
 
 
 async def process_invalid_contact(message: types.Message):
-    await message.answer(hbold('Это не ваш контакт, используйте кнопку, чтобы отправить'), parse_mode=ParseMode.HTML)
+    await message.answer(hbold('Это не Ваш контакт, используйте кнопку, чтобы отправить'), parse_mode=ParseMode.HTML)
 
 
 async def process_contact(message: types.Message, state: FSMContext):

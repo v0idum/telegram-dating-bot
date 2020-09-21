@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 async def handle_search(message: types.Message):
     await Search.gender.set()
-    await message.answer(hbold('Кого вы хотите найти❓'),
+    await message.answer(hbold('Кого Вы хотите найти❓'),
                          parse_mode=ParseMode.HTML,
                          reply_markup=gender_keyboard(strings.MALE_SEARCH, strings.FEMALE_SEARCH))
 
@@ -26,7 +26,7 @@ async def process_chats(message: types.Message):
     me = message.from_user.id
     chats = db.get_chats_of_user(me)
     if not chats:
-        await message.answer(hbold('У вас пока нет собеседников🥺'), parse_mode=ParseMode.HTML)
+        await message.answer(hbold('У Вас пока нет собеседников🥺'), parse_mode=ParseMode.HTML)
     else:
         for chat in chats:
             interlocutor = db.get_user(extract_interlocutor(me, chat))
@@ -35,7 +35,7 @@ async def process_chats(message: types.Message):
 
 
 async def process_balance(message: types.Message):
-    balance = hbold('👑У вас премиум аккаунт💎')
+    balance = hbold('👑У Вас премиум аккаунт💎')
     if not db.is_premium(message.from_user.id):
         hearts = db.get_user_hearts(message.from_user.id)
         balance = hbold(f'💳Баланс: {hearts}{strings.SYMBOL}')
