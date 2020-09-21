@@ -3,10 +3,10 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.files import JSONStorage
 from aiogram.utils import executor
-from app.handlers import registration, home, search, conversation, editprofile
+from handlers import registration, home, search, conversation, editprofile
 from aiogram import types
-from app.config import BOT_TOKEN, ADMIN
-from app.database import db
+from config import BOT_TOKEN, ADMIN
+from database import db
 
 logging.basicConfig(level=logging.INFO, filename='logs.log')
 
@@ -34,7 +34,8 @@ async def remove_user(message: types.Message):
 
 @dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='users', state='*')
 async def get_users(message: types.Message):
-    await message.answer(db.get_users())
+    users = db.get_users()
+    await message.answer(f'{len(users)}\n{users}')
 
 
 @dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='rmcity', state='*')
@@ -50,7 +51,8 @@ async def remove_city(message: types.Message):
 
 @dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='cities', state='*')
 async def get_users(message: types.Message):
-    await message.answer(db.get_cities())
+    cities = db.get_cities()
+    await message.answer(f'{len(cities)}\n{cities}')
 
 
 if __name__ == '__main__':
