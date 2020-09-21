@@ -149,6 +149,11 @@ class DBConnector:
         self.cursor.execute("SELECT * FROM cities")
         return self.cursor.fetchall()
 
+    def remove_city(self, name):
+        sql = "DELETE FROM cities WHERE name = %s"
+        self.cursor.execute(sql, (name,))
+        self.connection.commit()
+
     def create_chat(self, first_user, second_user):
         sql = "INSERT INTO chats (first_user, second_user) VALUES (%s, %s)"
         self.cursor.execute(sql, (first_user, second_user))

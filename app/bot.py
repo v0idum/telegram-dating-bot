@@ -32,9 +32,25 @@ async def remove_user(message: types.Message):
         await message.answer(f'User {user_id} does not exist')
 
 
-@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='all', state='*')
+@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='users', state='*')
 async def get_users(message: types.Message):
     await message.answer(db.get_users())
+
+
+@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='rmcity', state='*')
+async def remove_city(message: types.Message):
+    name = message.get_args()
+    if name and db.city_exists(name):
+        db.remove_city(name)
+        await message.answer(f'City {name} has been removed..')
+        logging.info(f'City {name} has been removed..')
+    else:
+        await message.answer(f'City {name} does not exist')
+
+
+@dp.message_handler(lambda message: message.from_user.id == ADMIN, commands='cities', state='*')
+async def get_users(message: types.Message):
+    await message.answer(db.get_cities())
 
 
 if __name__ == '__main__':
