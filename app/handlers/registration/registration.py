@@ -28,7 +28,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
                 await state.update_data(inviter=user_id)
     # Set state
     await Profile.name.set()
-    await message.answer(strings.welcome_msg(), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(strings.welcome_msg(), parse_mode=ParseMode.HTML)
     await message.answer(hitalic("Представьтесь, как вас зовут?"), parse_mode=ParseMode.HTML)
 
 
