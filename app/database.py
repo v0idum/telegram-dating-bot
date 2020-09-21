@@ -1,7 +1,7 @@
 from mysql import connector
 from mysql.connector import errorcode
 
-from app.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+from config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 import logging
 
 log = logging.getLogger(__name__)
