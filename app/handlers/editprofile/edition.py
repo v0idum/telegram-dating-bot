@@ -1,10 +1,10 @@
 from aiogram import types, Bot
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ParseMode
-from aiogram.utils.markdown import bold
+from aiogram.utils.markdown import hbold
 
-from app.database import db
-from app.states import EditProfile
+from database import db
+from states import EditProfile
 
 
 async def handle_edit_btn(query: types.CallbackQuery):
@@ -36,36 +36,36 @@ async def handle_edit_btn(query: types.CallbackQuery):
 
 async def process_name(message: types.Message, state: FSMContext):
     db.update_user(message.from_user.id, 'name', message.text)
-    await message.answer(bold('Ваше имя успешно изменено!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Ваше имя успешно изменено!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)
 
 
 async def process_age(message: types.Message, state: FSMContext):
     db.update_user(message.from_user.id, 'age', message.text)
-    await message.answer(bold('Ваш возраст успешно изменён!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Ваш возраст успешно изменён!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)
 
 
 async def process_city(message: types.Message, state: FSMContext):
     new_city_id = db.get_city_id(message.text)
     db.update_user(message.from_user.id, 'city', new_city_id)
-    await message.answer(bold('Ваш город успешно изменён!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Ваш город успешно изменён!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)
 
 
 async def process_occupation(message: types.Message, state: FSMContext):
     db.update_user(message.from_user.id, 'occupation', message.text)
-    await message.answer(bold('Ваш род занятий успешно изменён!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Ваш род занятий успешно изменён!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)
 
 
 async def process_about(message: types.Message, state: FSMContext):
     db.update_user(message.from_user.id, 'about', message.text)
-    await message.answer(bold('Информация о вас успешно сохранена!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Информация о вас успешно сохранена!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)
 
 
 async def process_photo(message: types.Message, state: FSMContext):
     db.update_user(message.from_user.id, 'photo', message.photo[-1].file_id)
-    await message.answer(bold('Ваше фото успешно сохранено!'), parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(hbold('Ваше фото успешно сохранено!'), parse_mode=ParseMode.HTML)
     await state.reset_state(with_data=False)

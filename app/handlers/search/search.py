@@ -1,12 +1,12 @@
 import logging
 
 from aiogram.dispatcher import FSMContext
-from aiogram.utils.markdown import bold
+from aiogram.utils.markdown import hbold, hcode
 
-from app.utils import *
-from app.states import Search
-from app.keyboards import home_keyboard, city_search_kb, like_and_more_kb, chat_and_more_kb
-from app.database import db
+from utils import *
+from states import Search
+from keyboards import home_keyboard, city_search_kb, like_and_more_kb, chat_and_more_kb
+from database import db
 
 log = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ async def process_invalid_gender_search(message: types.Message):
 async def process_gender_search(query: types.CallbackQuery, state: FSMContext):
     await state.update_data(gender=query.data)
     await Search.next()
-    await query.message.edit_text(bold('🗺️Выберите город:'), reply_markup=city_search_kb(), parse_mode=ParseMode.MARKDOWN_V2)
+    await query.message.edit_text(hbold('🗺️Выберите город:'), reply_markup=city_search_kb(), parse_mode=ParseMode.HTML)
 
 
 async def process_city_search_invalid(message: types.Message):
@@ -39,7 +39,7 @@ async def process_city_search(query: types.CallbackQuery, state: FSMContext):
             user = db.next_user_by_city(data['city_id'], data['gender'], query.from_user.id, data['offset'])
 
         if not user:
-            await query.message.answer('🤷‍️Тут пока никого нет, попробуйте позже')
+            await query.message.answer(hbold('🤷‍️Тут пока никого нет, попробуйте позже'), parse_mode=ParseMode.HTML)
             await query.answer()
         else:
             await subtract_hearts(display_swipe, query.from_user.id, query, 1, user)
@@ -62,7 +62,8 @@ async def process_swipe(query: types.CallbackQuery, state: FSMContext):
             await query.answer()
             await query.message.delete()
             data['offset'] = -1
-            await query.message.answer('🏁Пока что всё, попробуйте ещё чуть позже😊', reply_markup=home_keyboard())
+            await query.message.answer(hbold('🏁Пока что всё, попробуйте ещё чуть позже😊'), parse_mode=ParseMode.HTML,
+                                       reply_markup=home_keyboard())
         else:
             await subtract_hearts(display_swipe, query.from_user.id, query, 1, current_user)
 
@@ -93,7 +94,8 @@ async def send_like(query: types.CallbackQuery, user):
 
     me = db.get_user_name(query.from_user.id)
 
-    await Bot.get_current().send_message(user, f'Вас лайкнул пользователь {me}', reply_markup=markup)
+    await Bot.get_current().send_message(user, hcode(f'Вас лайкнул пользователь {me}'),
+                                         parse_mode=ParseMode.HTML, reply_markup=markup)
     await query.answer('Вы лайкнули этого человека!')
 
 

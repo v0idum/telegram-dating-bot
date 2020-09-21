@@ -5,10 +5,10 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ParseMode
 from aiogram.utils.markdown import *
 
-from app.database import db
-from app.keyboards import chat_and_more_kb, back_to_search_btn
-from app.states import Conversation, Search
-from app.utils import extract_user_id, parse_chat, parse_profile, free_profile, subtract_hearts
+from database import db
+from keyboards import chat_and_more_kb, back_to_search_btn
+from states import Conversation, Search
+from utils import extract_user_id, parse_chat, parse_profile, free_profile, subtract_hearts
 
 
 async def process_chat_login(query: types.CallbackQuery, state: FSMContext):
@@ -29,8 +29,8 @@ async def process_chat_login(query: types.CallbackQuery, state: FSMContext):
     await query.answer('Вход в чат')
     await query.message.delete()
     await query.message.answer(
-        bold(f'🗣️Вы перешли в чат с пользователем {name}. Он(а) получит все ваши сообщения✈️.'),
-        reply_markup=markup, parse_mode=ParseMode.MARKDOWN_V2)
+        hbold(f'🗣️Вы перешли в чат с пользователем {name}. Он(а) получит все ваши сообщения✈️.'),
+        reply_markup=markup, parse_mode=ParseMode.HTML)
 
 
 async def activate_chat_or_subtract(chat: tuple, message: types.Message, state: FSMContext):
@@ -59,8 +59,8 @@ async def deliver_message(message: types.Message, state: FSMContext):
             me = db.get_user_name(message.from_user.id)
             if user_data.state == Conversation.room.state and user_data['interlocutor'] == message.from_user.id:
                 await Bot.get_current().send_message(data['interlocutor'],
-                                                     text(bold(f'{me}:'), italic(message.text), sep='\n'),
-                                                     parse_mode=ParseMode.MARKDOWN)
+                                                     text(hbold(f'{me}:'), hitalic(message.text), sep='\n'),
+                                                     parse_mode=ParseMode.HTML)
             else:
                 is_free_profile = free_profile(message.from_user.id, data['interlocutor'])
                 message.text = f'Сообщение от пользователя {me}:\n"{message.text}"'
