@@ -33,12 +33,12 @@ class DBConnector:
         self.cursor.execute(sql, values)
         self.connection.commit()
 
-    def update_user_data(self, user_id, name, age, gender, city, occupation, about, photo, number):
+    def update_user_data(self, user_id, name, age, gender, city, occupation, about, photo):
         sql = "UPDATE users SET name = %s, age = %s, gender = %s, \
               city = %s, occupation = %s, about = %s, photo = %s, \
-              phone_number = %s, active = %s  \
+              active = %s  \
               WHERE user_id = %s"
-        values = (name, age, gender, city, occupation, about, photo, number, 1, user_id)  # 1 is set to active state
+        values = (name, age, gender, city, occupation, about, photo, 1, user_id)  # 1 is set to active state
         self.cursor.execute(sql, values)
         self.connection.commit()
         log.info(f'{name} joined')

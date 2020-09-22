@@ -89,18 +89,7 @@ async def process_occupation(message: types.Message, state: FSMContext):
 async def process_about(message: types.Message, state: FSMContext):
     await state.update_data(about=message.text)
     await Profile.next()
-    await message.answer(hitalic('Отправьте свой контакт.'), parse_mode=ParseMode.HTML, reply_markup=request_contact_kb())
-
-
-async def process_invalid_contact(message: types.Message):
-    await message.answer(hbold('Это не Ваш контакт, используйте кнопку, чтобы отправить'), parse_mode=ParseMode.HTML)
-
-
-async def process_contact(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['contact'] = message.contact.phone_number
-        await Profile.next()
-        await message.answer(hitalic('Пришлите своё фото.'), parse_mode=ParseMode.HTML, reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(hitalic('Пришлите своё фото.'), parse_mode=ParseMode.HTML, reply_markup=types.ReplyKeyboardRemove())
 
 
 async def process_invalid_photo(message: types.Message):
@@ -112,7 +101,7 @@ async def process_photo_and_save_data(message: types.Message, state: FSMContext)
         data['photo'] = message.photo[-1].file_id
         city_id = db.get_city_id(data['city'])
         db.update_user_data(message.from_user.id, data['name'], data['age'], data['gender'], city_id,
-                            data['occupation'], data['about'], data['photo'], data['contact'])
+                            data['occupation'], data['about'], data['photo'])
 
         if 'inviter' in data.keys():
             increase_by = 10

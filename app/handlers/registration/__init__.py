@@ -26,11 +26,5 @@ def setup(dp: Dispatcher):
 
     dp.register_message_handler(process_about, state=Profile.about)
 
-    dp.register_message_handler(process_contact, lambda message: message.from_user.id == message.contact.user_id,
-                                state=Profile.contact, content_types=ContentType.CONTACT)
-    dp.register_message_handler(process_invalid_contact, lambda message: not message.from_user.id == message.contact.user_id,
-                                state=Profile.contact, content_types=ContentType.CONTACT)
-    dp.register_message_handler(process_invalid_contact, state=Profile.contact, content_types=ContentType.ANY)
-
     dp.register_message_handler(process_photo_and_save_data, state=Profile.photo, content_types=ContentType.PHOTO)
     dp.register_message_handler(process_invalid_photo, state=Profile.photo, content_types=ContentType.ANY)

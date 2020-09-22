@@ -15,7 +15,6 @@ class Profile(StatesGroup):
     city = State()
     occupation = State()
     about = State()
-    contact = State()
     photo = State()
 
 
