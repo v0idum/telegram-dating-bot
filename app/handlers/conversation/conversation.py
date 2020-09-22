@@ -3,6 +3,7 @@ import logging
 from aiogram import types, Dispatcher, Bot
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ParseMode
+from aiogram.utils.exceptions import BotBlocked
 from aiogram.utils.markdown import *
 
 from database import db
@@ -57,14 +58,17 @@ async def deliver_message(message: types.Message, state: FSMContext):
         with_user_state = Dispatcher.get_current().current_state(chat=data['interlocutor'], user=data['interlocutor'])
         async with with_user_state.proxy() as user_data:
             me = db.get_user_name(message.from_user.id)
-            if user_data.state == Conversation.room.state and user_data['interlocutor'] == message.from_user.id:
-                await Bot.get_current().send_message(data['interlocutor'],
-                                                     text(hbold(f'{me}:'), hitalic(message.text), sep='\n'),
-                                                     parse_mode=ParseMode.HTML)
-            else:
-                is_free_profile = free_profile(message.from_user.id, data['interlocutor'])
-                message.text = f'Сообщение от пользователя {me}:\n"{message.text}"'
-                await message.send_copy(data['interlocutor'],
-                                        reply_markup=chat_and_more_kb(parse_chat(message.from_user.id),
-                                                                      parse_profile(message.from_user.id),
-                                                                      free_profile=is_free_profile))
+            try:
+                if user_data.state == Conversation.room.state and user_data['interlocutor'] == message.from_user.id:
+                    await Bot.get_current().send_message(data['interlocutor'],
+                                                         text(hbold(f'{me}:'), hitalic(message.text), sep='\n'),
+                                                         parse_mode=ParseMode.HTML)
+                else:
+                    is_free_profile = free_profile(message.from_user.id, data['interlocutor'])
+                    message.text = f'Сообщение от пользователя {me}:\n"{message.text}"'
+                    await message.send_copy(data['interlocutor'],
+                                            reply_markup=chat_and_more_kb(parse_chat(message.from_user.id),
+                                                                          parse_profile(message.from_user.id),
+                                                                          free_profile=is_free_profile))
+            except BotBlocked:
+                logging.warning(f"{me} could not chat with {data['interlocutor']}, user blocked the bot")

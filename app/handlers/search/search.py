@@ -1,6 +1,7 @@
 import logging
 
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.exceptions import BotBlocked
 from aiogram.utils.markdown import hbold, hcode
 
 from utils import *
@@ -94,8 +95,11 @@ async def send_like(query: types.CallbackQuery, user):
 
     me = db.get_user_name(query.from_user.id)
 
-    await Bot.get_current().send_message(user, hcode(f'Вас лайкнул пользователь {me}'),
-                                         parse_mode=ParseMode.HTML, reply_markup=markup)
+    try:
+        await Bot.get_current().send_message(user, hcode(f'Вас лайкнул пользователь {me}'),
+                                             parse_mode=ParseMode.HTML, reply_markup=markup)
+    except BotBlocked:
+        log.warning(f"{me} could not send like to {user}, user blocked the bot")
     await query.answer('Вы лайкнули этого человека!')
 
 
