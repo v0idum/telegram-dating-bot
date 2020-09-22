@@ -8,7 +8,7 @@ from utils import is_cyrillic
 
 
 def setup(dp: Dispatcher):
-    dp.register_callback_query_handler(handle_edit_btn, state='*')
+    dp.register_callback_query_handler(handle_edit_btn, state=EditProfile.editing)
 
     dp.register_message_handler(process_invalid_name, lambda message: len(message.text) > 25, state=EditProfile.name)
     dp.register_message_handler(process_name, lambda message: len(message.text) <= 25, state=EditProfile.name)

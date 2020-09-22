@@ -19,6 +19,7 @@ class Profile(StatesGroup):
 
 
 class EditProfile(StatesGroup):
+    editing = State()
     name = State()
     age = State()
     city = State()

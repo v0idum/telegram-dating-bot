@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from aiogram.utils.markdown import *
 
 from database import db
-from states import Search, Conversation
+from states import Search, Conversation, EditProfile
 from keyboards import gender_keyboard, home_keyboard, chat_kb, profile_edit_kb
 import strings
 from config import INVITE_LINK
@@ -54,3 +54,4 @@ async def process_profile(message: types.Message):
     await message.answer(text(hbold('👤Мой профиль'), hitalic('Вы можете редактировать свои данные, выбирая нужные пункты ниже⬇️'), sep='\n'),
                          parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
     await display_user(message.from_user.id, me, markup=profile_edit_kb())
+    await EditProfile.editing.set()
