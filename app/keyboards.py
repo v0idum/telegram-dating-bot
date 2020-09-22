@@ -30,7 +30,7 @@ def home_keyboard():
 
 
 def city_search_kb():
-    kb = InlineKeyboardMarkup(row_width=5)
+    kb = InlineKeyboardMarkup(row_width=3)
     kb.add(*(InlineKeyboardButton(callback_data=city_row[0], text=city_row[1]) for city_row in db.get_cities()))
     return kb
 
