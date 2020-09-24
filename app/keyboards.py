@@ -12,13 +12,6 @@ def gender_keyboard(male: str, female: str):
     return markup
 
 
-def request_contact_kb():
-    markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    contact_btn = KeyboardButton('Отправить контакт', request_contact=True)
-    markup.add(contact_btn)
-    return markup
-
-
 def home_keyboard():
     markup = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     search = KeyboardButton(SEARCH)

@@ -3,7 +3,7 @@ import logging
 from aiogram.types import ParseMode
 from aiogram.utils.markdown import hitalic, hbold
 
-from keyboards import gender_keyboard, request_contact_kb, home_keyboard
+from keyboards import gender_keyboard, home_keyboard
 from aiogram.dispatcher import FSMContext
 from aiogram import types
 from states import Profile
