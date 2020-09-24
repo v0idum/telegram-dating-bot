@@ -82,3 +82,7 @@ def free_profile(first_user_id, second_user_id):
 
 def is_cyrillic(text: str):
     return bool(re.search('^[а-яА-Я]+$', text))
+
+
+def permitted(user_id):
+    return db.is_user_active(user_id) and not db.is_banned(user_id)

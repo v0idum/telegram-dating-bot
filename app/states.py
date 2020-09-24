@@ -9,6 +9,7 @@ class Home(StatesGroup):
 
 
 class Profile(StatesGroup):
+    majority = State()
     name = State()
     age = State()
     gender = State()

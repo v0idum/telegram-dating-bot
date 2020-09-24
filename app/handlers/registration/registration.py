@@ -1,34 +1,49 @@
 import logging
 
-from aiogram.types import ParseMode
+from aiogram.types import ParseMode, ReplyKeyboardRemove
 from aiogram.utils.markdown import hitalic, hbold
 
-from keyboards import gender_keyboard, home_keyboard
+from keyboards import gender_keyboard, home_keyboard, confirm_age_majority_kb
 from aiogram.dispatcher import FSMContext
 from aiogram import types
 from states import Profile
 from database import db
+from utils import permitted
 import strings
 
 log = logging.getLogger(__name__)
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
+    if db.is_banned(message.from_user.id):
+        return
+
     user_exists = db.user_exists(message.from_user.id)
-    if user_exists and db.is_user_active(message.from_user.id):
+    if user_exists and permitted(message.from_user.id):
         await message.answer(hbold('Приветствую❗Рад, что Вы вернулись!🤗'),
                              parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
         return
 
-    if not user_exists:
-        db.add_user(message.from_user.id, message.from_user.full_name, message.from_user.username, message.from_user.language_code)
-        if message.get_args():
-            user_id = message.get_args()
-            if db.user_exists(user_id):
-                await state.update_data(inviter=user_id)
+    if not user_exists and message.get_args():
+        user_id = message.get_args()
+        if db.user_exists(user_id):
+            await state.update_data(inviter=user_id)
+
+    await Profile.majority.set()
+    await message.answer('Вам есть 18 лет?', reply_markup=confirm_age_majority_kb())
+
+
+async def process_age_majority(message: types.Message, state: FSMContext):
+    if message.text != strings.YES:
+        db.ban_user(message.from_user.id)
+        await state.finish()
+        return
+    if not db.user_exists(message.from_user.id):
+        db.add_user(message.from_user.id, message.from_user.full_name, message.from_user.username,
+                    message.from_user.language_code)
     # Set state
     await Profile.name.set()
-    await message.answer(strings.welcome_msg(), parse_mode=ParseMode.HTML)
+    await message.answer(strings.welcome_msg(), parse_mode=ParseMode.HTML, reply_markup=ReplyKeyboardRemove())
     await message.answer(hitalic("Представьтесь, как Вас зовут?"), parse_mode=ParseMode.HTML)
 
 
@@ -89,7 +104,8 @@ async def process_occupation(message: types.Message, state: FSMContext):
 async def process_about(message: types.Message, state: FSMContext):
     await state.update_data(about=message.text)
     await Profile.next()
-    await message.answer(hitalic('Пришлите своё фото.'), parse_mode=ParseMode.HTML, reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(hitalic('Пришлите своё фото.'), parse_mode=ParseMode.HTML,
+                         reply_markup=types.ReplyKeyboardRemove())
 
 
 async def process_invalid_photo(message: types.Message):
@@ -112,5 +128,6 @@ async def process_photo_and_save_data(message: types.Message, state: FSMContext)
             increased_hearts = db.get_user_hearts(data['inviter']) + increase_by
             db.update_user_hearts(data['inviter'], increased_hearts)
     await state.finish()
-    await message.answer(hbold('Отлично!👌 Можете приступать к поиску своей второй половинки!😍 Удачи в любовных делах!✌'),
-                         parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
+    await message.answer(
+        hbold('Отлично!👌 Можете приступать к поиску своей второй половинки!😍 Удачи в любовных делах!✌'),
+        parse_mode=ParseMode.HTML, reply_markup=home_keyboard())

@@ -21,6 +21,10 @@ LIKE = 'like'
 CHAT = 'chat'
 MORE = 'profile'
 
+# Age majority confirmation
+YES = 'Да'
+NO = 'Нет'
+
 
 def welcome_msg():
     return text(hbold(f'Приветствую❗Меня зовут Купидон, Я - Бог Любви!{SYMBOL}'),

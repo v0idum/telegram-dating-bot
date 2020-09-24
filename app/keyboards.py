@@ -1,7 +1,13 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from database import db
-from strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL
+from strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL, YES, NO
 from states import EditProfile
+
+
+def confirm_age_majority_kb():
+    markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    markup.add(YES, NO)
+    return markup
 
 
 def gender_keyboard(male: str, female: str):

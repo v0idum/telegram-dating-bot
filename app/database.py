@@ -81,6 +81,16 @@ class DBConnector:
         self.cursor.execute(sql, (user_id,))
         return not self.cursor.fetchone()[0]
 
+    def is_banned(self, user_id):
+        sql = "SELECT * FROM banned_users WHERE user_id = %s"
+        self.cursor.execute(sql, (user_id,))
+        return bool(self.cursor.fetchone())
+
+    def ban_user(self, user_id):
+        sql = "INSERT INTO banned_users (user_id) VALUES (%s)"
+        self.cursor.execute(sql, (user_id,))
+        self.connection.commit()
+
     def get_user_hearts(self, user_id):
         sql = "SELECT hearts FROM users WHERE user_id = %s"
         value = (user_id,)

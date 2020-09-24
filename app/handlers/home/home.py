@@ -51,7 +51,9 @@ async def process_balance(message: types.Message):
 
 async def process_profile(message: types.Message):
     me = db.get_user(message.from_user.id)
-    await message.answer(text(hbold('👤Мой профиль'), hitalic('Вы можете редактировать свои данные, выбирая нужные пункты ниже⬇️'), sep='\n'),
-                         parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
+    await message.answer(
+        text(hbold('👤Мой профиль'), hitalic('Вы можете редактировать свои данные, выбирая нужные пункты ниже⬇️'),
+             sep='\n'),
+        parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
     await display_user(message.from_user.id, me, markup=profile_edit_kb())
     await EditProfile.editing.set()

@@ -10,6 +10,8 @@ from utils import is_cyrillic
 def setup(dp: Dispatcher):
     dp.register_message_handler(cmd_start, CommandStart(), state='*')
 
+    dp.register_message_handler(process_age_majority, state=Profile.majority)
+
     dp.register_message_handler(process_invalid_name, lambda message: len(message.text) > 25, state=Profile.name)
     dp.register_message_handler(process_name, state=Profile.name)
 
