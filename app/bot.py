@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.files import JSONStorage
 from aiogram.utils import executor
-from handlers import registration, home, search, conversation, editprofile
+from handlers import registration, home, search, conversation, editprofile, admin
 from config import BOT_TOKEN
 from database import db
 
@@ -21,6 +21,7 @@ async def shutdown_storage(dispatcher: Dispatcher):
 
 
 if __name__ == '__main__':
+    admin.setup(dp)
     home.setup(dp)
     registration.setup(dp)
     conversation.setup(dp)

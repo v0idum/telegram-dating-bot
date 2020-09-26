@@ -37,3 +37,8 @@ async def edit_users_city(message: types.Message):
         args = cmd.split(' ')
         db.edit_users_city_name(*args)
         await message.answer('Done')
+
+
+async def get_cities(message: types.Message):
+    cities = db.get_cities()
+    await message.answer(f'{len(cities)}\n{cities}')

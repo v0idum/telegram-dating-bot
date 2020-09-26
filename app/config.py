@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-ADMIN = int(os.getenv('ADMIN'))  # admin telegram user id
+ADMIN = os.getenv('ADMIN').split(' ')  # add admin IDs separated by spaces in .env file
 
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
