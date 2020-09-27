@@ -56,8 +56,8 @@ async def process_chatting(message: types.Message, state: FSMContext):
 async def deliver_message(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         if db.is_fake(data['interlocutor']):
-            print('Fake chatted')
             return
+
         with_user_state = Dispatcher.get_current().current_state(chat=data['interlocutor'], user=data['interlocutor'])
         async with with_user_state.proxy() as user_data:
             me = db.get_user_name(message.from_user.id)

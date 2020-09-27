@@ -30,7 +30,8 @@ async def process_chats(message: types.Message):
     else:
         for chat in chats:
             interlocutor = db.get_user(extract_interlocutor(me, chat))
-            await display_user(me, interlocutor, markup=chat_kb(parse_chat(interlocutor[0])))
+            if interlocutor:
+                await display_user(me, interlocutor, markup=chat_kb(parse_chat(interlocutor[0])))
         await message.answer(hbold('👥Ваши чаты⬆️'), parse_mode=ParseMode.HTML, reply_markup=home_keyboard())
 
 

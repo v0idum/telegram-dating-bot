@@ -87,7 +87,6 @@ async def send_like(query: types.CallbackQuery, user):
     db.add_like(query.from_user.id, user)
     await query.answer('Вы лайкнули этого человека!')
     if db.is_fake(user):
-        print('Fake liked')
         return
 
     is_free_profile = free_profile(query.from_user.id, user)
