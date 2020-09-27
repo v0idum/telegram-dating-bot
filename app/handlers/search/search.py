@@ -85,6 +85,11 @@ async def process_like(query: types.CallbackQuery):
 
 async def send_like(query: types.CallbackQuery, user):
     db.add_like(query.from_user.id, user)
+    await query.answer('Вы лайкнули этого человека!')
+    if db.is_fake(user):
+        print('Fake liked')
+        return
+
     is_free_profile = free_profile(query.from_user.id, user)
     if db.liked(user, query.from_user.id):  # if he liked me
         markup = chat_and_more_kb(parse_chat(query.from_user.id), parse_profile(query.from_user.id),
@@ -100,7 +105,6 @@ async def send_like(query: types.CallbackQuery, user):
                                              parse_mode=ParseMode.HTML, reply_markup=markup)
     except BotBlocked:
         log.warning(f"{me} could not send like to {user}, user blocked the bot")
-    await query.answer('Вы лайкнули этого человека!')
 
 
 async def process_more(query: types.CallbackQuery):
