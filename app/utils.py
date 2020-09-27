@@ -1,3 +1,5 @@
+from random import randint
+
 from aiogram import Bot, types
 from aiogram.types import ParseMode
 
@@ -86,3 +88,10 @@ def is_cyrillic(text: str):
 
 def permitted(user_id):
     return db.is_user_active(user_id) and not db.is_banned(user_id)
+
+
+def random_id():
+    while True:
+        fake_id = randint(1000000, 99999999)
+        if not db.user_exists(fake_id):
+            return fake_id
