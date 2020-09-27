@@ -66,8 +66,13 @@ async def process_age_invalid(message: types.Message):
 
 
 async def process_age(message: types.Message, state: FSMContext):
+    age = int(message.text)
+    if age < 18:
+        db.ban_user(message.from_user.id)
+        await state.finish()
+        return
+    await state.update_data(age=age)
     await Profile.next()
-    await state.update_data(age=int(message.text))
 
     await message.answer(hitalic("Кто Вы?"), reply_markup=gender_keyboard(strings.MALE, strings.FEMALE),
                          parse_mode=ParseMode.HTML)
