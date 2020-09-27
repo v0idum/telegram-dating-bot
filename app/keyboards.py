@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from database import db
-from strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL, YES, NO
+from strings import SEARCH, CONVERSE, PROFILE, BALANCE, NEXT, BACK, SYMBOL, YES, NO, MALE, FEMALE
 from states import EditProfile
 
 
@@ -10,7 +10,7 @@ def confirm_age_majority_kb():
     return markup
 
 
-def gender_keyboard(male: str, female: str):
+def gender_keyboard(male: str = MALE, female: str = FEMALE):
     markup = InlineKeyboardMarkup()
     male = InlineKeyboardButton(male, callback_data='1')
     female = InlineKeyboardButton(female, callback_data='0')
@@ -55,7 +55,8 @@ def back_to_search_btn():
 def like_and_more_kb(like: str, more: str, free_profile=False):
     kb = InlineKeyboardMarkup()
     profile_text = '✅Профиль' if free_profile else f'👁Профиль 5{SYMBOL}'
-    kb.add(InlineKeyboardButton(f'👍🏻 5{SYMBOL}', callback_data=like), InlineKeyboardButton(profile_text, callback_data=more))
+    kb.add(InlineKeyboardButton(f'👍🏻 5{SYMBOL}', callback_data=like),
+           InlineKeyboardButton(profile_text, callback_data=more))
     return kb
 
 

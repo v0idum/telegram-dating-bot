@@ -42,8 +42,19 @@ class DBConnector:
         self.execute(sql, values)
         log.info(f'{name} joined')
 
+    def add_fake(self, user_id, name, age, gender, city, occupation, about, photo):
+        sql = "INSERT INTO users (user_id, name, age, gender, city, occupation, about, photo, active, is_fake) \
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        self.execute(sql, (user_id, name, age, gender, city, occupation, about, photo, 1, 1))  # Active and Fake
+        log.info(f'Fake {name} added..')
+
+    def is_fake(self, user_id):
+        sql = "SELECT is_fake FROM users WHERE user_id = %s"
+        self.execute(sql, (user_id,))
+        return bool(self.cursor.fetchone()[0])
+
     def get_users(self):
-        self.execute("SELECT user_id, name, age, gender, about FROM users")
+        self.execute("SELECT user_id, name, age, gender, about FROM users WHERE is_fake = 0")
         return self.cursor.fetchall()
 
     def next_user_by_city(self, city_id, gender, exclude, offset):

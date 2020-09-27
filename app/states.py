@@ -19,6 +19,16 @@ class Profile(StatesGroup):
     photo = State()
 
 
+class FakeUser(StatesGroup):
+    name = State()
+    age = State()
+    gender = State()
+    city = State()
+    occupation = State()
+    about = State()
+    photo = State()
+
+
 class EditProfile(StatesGroup):
     editing = State()
     name = State()
