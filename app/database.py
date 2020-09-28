@@ -54,7 +54,7 @@ class DBConnector:
         return bool(self.cursor.fetchone()[0])
 
     def get_users(self):
-        self.execute("SELECT user_id, name, age, gender, about FROM users WHERE is_fake = 0")
+        self.execute("SELECT user_id, name, age, gender, occupation FROM users WHERE active = 1 AND is_fake = 0")
         return self.cursor.fetchall()
 
     def next_user_by_city(self, city_id, gender, exclude, offset):

@@ -24,7 +24,10 @@ async def remove_user(message: types.Message):
 
 async def get_users(message: types.Message):
     users = db.get_users()
-    await message.answer(f'{len(users)}\n{users}')
+    res = ''
+    for user in users:
+        res += f'{user}\n'
+    await message.answer(f'{len(users)}\n{res}')
 
 
 async def remove_city(message: types.Message):
